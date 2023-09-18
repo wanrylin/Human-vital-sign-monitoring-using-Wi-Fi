@@ -1,6 +1,6 @@
 # Human vital sign monitoring using Wi-Fi 2021
 Part of work in this project has been published: https://ieeexplore.ieee.org/abstract/document/9790274
-My Final Year Project (FYP) cooperated with @github/Lindy Zhou homepage:https://github.com/LINDYZHOU.  
+My Final Year Project (FYP) cooperated with @github/LINDYZHOU homepage:https://github.com/LINDYZHOU.  
 Our superviser is Prof.Cuo Yongxin homepage:https://www.ece.nus.edu.sg/stfpage/eleguoyx/.
 
 ## Introduction
@@ -28,7 +28,7 @@ The captured CSI data contains the amplitude and phase sequence in each subcarri
 
 ## System Design
 ### 1 CSI capturing
-This system is implemented with off-the-shelf hardware devices. 2 PCs are used as the sending and receiving devices, and their network card for each is Intel Ax200 with 2 omni antennas which supports the latest IEEE 802.11ac/ax protocols. The PCs have Ubuntu OS in version 20.04. I use the PicoScenes CSI-toolbox [1], which is a Wi-Fi sensing platform software that supports the 802.11ac/ax-format CSI measurement, to extract CSI data from received Wi-Fi signals. The received CSI data contains CSI amplitude and phase information as well as the index of the package which is utilized in interpolation. The CSI captured by PicoScenes platform is progressed in Matlab 2021b with PicoScenes toolbox.
+This system is implemented with off-the-shelf hardware devices. 2 PCs are used as the sending and receiving devices, and their network card for each is Intel Ax200 with 2 omni antennas which supports the latest IEEE 802.11ac/ax protocols. The PCs have Ubuntu OS in version 20.04. I use the PicoScenes CSI-toolbox [^1], which is a Wi-Fi sensing platform software that supports the 802.11ac/ax-format CSI measurement, to extract CSI data from received Wi-Fi signals. The received CSI data contains CSI amplitude and phase information as well as the index of the package which is utilized in interpolation. The CSI captured by PicoScenes platform is progressed in Matlab 2021b with PicoScenes toolbox.
 
 ### 2 Subcarrier selection
 IEEE 802.11ac/ax contains much more subcarriers than 802.11n, up to 4times in our experiment. This new feature makes it possible to dynamically select subcarriers with the best performance. Meanwhile, the pervious method performs weak after applied into our experiment. Therefore, it is necessary to design a new subcarrier selection method.<br>
@@ -37,7 +37,7 @@ Generally speaking, there are 2 main features of subcarriers.  <br>
 (2)The sensibility of one subcarrier fluctuates as time goes by.<br>
 <img src="https://github.com/wanrylin/Human-vital-sign-monitoring-using-Wi-Fi/blob/main/figures/subcarrier%20feature.png" alt="subcarrier feature" width="500"><br>
 As the figure shows, the 122th subcarrier is most sensitive in the first few seconds while the 145th subcarrier is most sensitive around 25 seconds. Therefore, deriving the result only from one subcarrier is obviously unreliable. It is feasible and necessary to draw the result from a serious of subcarriers. <br>
-According to paper[2], in one Fresnel zone model, if there is one subcarrier is affected by respiration, there must be other affected subcarriers. Meanwhile, both breathing and heartbeat is most obvious on the chest. So according to Fresnel Zone Model, the subcarriers selected for breathing estimation and heartrate estimation should be the same.[3] Due to the movement of breathing is much fiercer than heartbeat, the subcarrier selection is focus on breathing.
+According to paper[^2], in one Fresnel zone model, if there is one subcarrier is affected by respiration, there must be other affected subcarriers. Meanwhile, both breathing and heartbeat is most obvious on the chest. So according to Fresnel Zone Model, the subcarriers selected for breathing estimation and heartrate estimation should be the same.[^3] Due to the movement of breathing is much fiercer than heartbeat, the subcarrier selection is focus on breathing.
 
 #### SNR based subcarrier selection
 SNR is widely utilized in communication signal analysis. It is adapted to applied into human vital sign by us. The adapted SNR is able to qualify the sensing ability of subcarrier in a limited frequency range. It can be represented as below:
@@ -47,6 +47,6 @@ $$ SNR_{m,i} = \frac{P_{i,max}}{P_n} = \frac{S_{i,max}}{\frac{1}{t}\cdot\sum_{f_
 
 
 ## Reference
-[1]Z. Jiang, T. H. Luan, X. Ren, D. Lv, H. Hao, J. Wang, K. Zhao, W. Xi, Y. Xu, and R. Li, “Eliminating the Barriers: Demystifying Wi-Fi Baseband Design and Introducing the PicoScenes Wi-Fi Sensing Platform,” IEEE Internet of Things Journal, pp. 1-1, 2021.<br>
-[2]X. Wang et al., "Placement Matters: Understanding the Effects of Device Placement for WiFi Sensing," vol. 6, no. 1 Proc. ACM Interact. Mob. Wearable Ubiquitous Technol., p. Article 32, 2022.<br>
-[3]H.Wang et al., "Human respiration detection with commodity wifi devices: do user location and body orientation matter?," presented at the Proceedings of the 2016 ACM International Joint Conference on Pervasive and Ubiquitous Computing, Heidelberg, Germany, 2016.<br>
+[^1]:Z. Jiang, T. H. Luan, X. Ren, D. Lv, H. Hao, J. Wang, K. Zhao, W. Xi, Y. Xu, and R. Li, “Eliminating the Barriers: Demystifying Wi-Fi Baseband Design and Introducing the PicoScenes Wi-Fi Sensing Platform,” IEEE Internet of Things Journal, pp. 1-1, 2021.
+[^2]:X. Wang et al., "Placement Matters: Understanding the Effects of Device Placement for WiFi Sensing," vol. 6, no. 1 Proc. ACM Interact. Mob. Wearable Ubiquitous Technol., p. Article 32, 2022.
+[^3]:H.Wang et al., "Human respiration detection with commodity wifi devices: do user location and body orientation matter?," presented at the Proceedings of the 2016 ACM International Joint Conference on Pervasive and Ubiquitous Computing, Heidelberg, Germany, 2016.
