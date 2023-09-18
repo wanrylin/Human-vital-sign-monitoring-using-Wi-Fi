@@ -1,6 +1,6 @@
 # Human vital sign monitoring using Wi-Fi 2021
 Part of work in this project has been published: https://ieeexplore.ieee.org/abstract/document/9790274
-My Final Year Project (FYP) cooperated with Lindy Zhou homepage:https://github.com/LINDYZHOU.  
+My Final Year Project (FYP) cooperated with @github/Lindy Zhou homepage:https://github.com/LINDYZHOU.  
 Our superviser is Prof.Cuo Yongxin homepage:https://www.ece.nus.edu.sg/stfpage/eleguoyx/.
 
 ## Introduction
@@ -35,9 +35,14 @@ IEEE 802.11ac/ax contains much more subcarriers than 802.11n, up to 4times in ou
 Generally speaking, there are 2 main features of subcarriers.  <br>
 (1)The sensibility of every subcarrier is different.  <br>
 (2)The sensibility of one subcarrier fluctuates as time goes by.<br>
-<img src="[https://github.com/](https://github.com/wanrylin/Human-vital-sign-monitoring-using-Wi-Fi/blob/main/figures/subcarrier%20feature.png)" alt="subcarrier feature" width="500"><br>
+<img src="https://github.com/wanrylin/Human-vital-sign-monitoring-using-Wi-Fi/blob/main/figures/subcarrier%20feature.png" alt="subcarrier feature" width="500"><br>
 As the figure shows, the 122th subcarrier is most sensitive in the first few seconds while the 145th subcarrier is most sensitive around 25 seconds. Therefore, deriving the result only from one subcarrier is obviously unreliable. It is feasible and necessary to draw the result from a serious of subcarriers. <br>
 According to paper[2], in one Fresnel zone model, if there is one subcarrier is affected by respiration, there must be other affected subcarriers. Meanwhile, both breathing and heartbeat is most obvious on the chest. So according to Fresnel Zone Model, the subcarriers selected for breathing estimation and heartrate estimation should be the same.[3] Due to the movement of breathing is much fiercer than heartbeat, the subcarrier selection is focus on breathing.
+
+#### SNR based subcarrier selection
+SNR is widely utilized in communication signal analysis. It is adapted to applied into human vital sign by us. The adapted SNR is able to qualify the sensing ability of subcarrier in a limited frequency range. It can be represented as below:
+$$ SNR_{m,i} = \frac{P_{i,max}}{P_n} = \frac{S_{i,max}}{\frac{1}{t}\cdot\sum_{f_2}^{m=f_1}S_{i,m} $$
+
 
 
 
