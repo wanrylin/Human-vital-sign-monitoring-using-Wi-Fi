@@ -70,6 +70,99 @@ Applying SSNR subcarrier selection into the system, and find top 20 subcarriers 
 <img src="https://github.com/wanrylin/Human-vital-sign-monitoring-using-Wi-Fi/blob/main/figures/multiperson.png" alt="SSNR subcarrier selection" width="600"><br>
 It is obvious that, the correlation of multi-person scenarios is always lower than 0.9 and the correlation of single-person scenarios is always over 0.9. The result of experiment matches the theory successfully. The threshold is set as 0.9, to detect whether it is multi-person situation. In the system, if constant 2 frames are detected the correlation is over 0.9, the system will recognize current situation is multi-person. The overall accuracy is 96.9% derived from the experiment.
 
+### Wavelet transform
+Different from FFT and short-time Fourier transform (STFT), Wavelet Transform can achieve a time-frequency representation of data, which provides not only the optimal resolution both in the time and frequency domains but also a multiscale analysis of the data. With Wavelet Transform, the phase difference data after subcarrier selection can be decomposed into an approximation coefficient vector with a low-pass filter and a detail coefficient vector with a high-pass filter. In fact, the approximation coefficient vector represents the basic shape of the input signal with large-scale characteristics, whereas the detail coefficient vector describes the high-frequency noises and the detailed information with small-scale characteristics. 
+
+In my system, Wavelet Transform is utilized to remove high-frequency noises from the collected CSI data. Moreover, the approximation coefficient $\alpha^L$  is used to detect the breathing rate and the sum of detail coefficients $\beta^{L-1}+\ \beta^L$ is used to detect the heart rate and the L is set to 4. For the original signal, I first execute the DWT-based decomposition recursively for four levels with the Daubechies (db) wavelet filter. After downsampling, the sampling rate becomes 20 Hz. Then the sampling rate is halved after every step of Wavelet Transform decomposition, and the detail coefficient $\beta^1$ and the approximation coefficient $\alpha^1$ have a frequency ranging from 10 to 5 Hz and 0 to 5 Hz, respectively.  
+
+For breath rate esitmation, after four decomposition steps, the approximation coefficient $\alpha^4$ is in the range of 0 to 0.625 Hz, which is used to obtain the denoised breathing signal. I use different coefficients based on the frequency of the main component $(𝑓_1)$ of each subcarrier. 
+If $𝑓_1$ is higher than 0.3 Hz, it is called Fast Breath and only the 5th detailed coefficient is used.  If $𝑓_1$ is lower than 0.3 Hz, it is called Slow Breath and only the 6th detailed coefficient is used. Then a clear respiratory signal can be re-constructed by doing inverse DWT.
+For heartbeat rate estimation, The sum of detail coefficients $\beta^3+\ \beta^4$ covers frequencies from 0.625 to 2.5 Hz, which is used to reconstruct the heart signal.
+
+## Result and conclusion
+#### Evaluation metric
+The ground truths of vital signs are monitored by a breath belt and 2 oximeters. Denote the estimated value of breathing or heart rate as $f_e$, the ground truth as $f_g$. The estimation accuracy $A_e$ is denoted as the equation:
+$$A_e = \left(1 - \frac{|f_e - f_g|}{f_g}\right) \times 100 \\% $$
+The performance of the system is evaluated by the estimation accuracy.
+
+#### Result
+This project has applied different CSI data features while extracting the respiratory signal. The performance of breathing rate estimation under IEEE 802.11ac/ax  is evaluated. The overall accuracy is shown in the table, and all the accuracy is calculated based on the dataset from our experiment.<br>
+**The accuracy of breathing rate estimation[^6][^7][^8]**
+<table style="text-align:center">
+  <tr>
+    <th>Subcarrier selection method</th>
+    <th colspan="3">SNR subcarrier selection</th>
+    <th>Largest variance</th>
+    <th>SNR subcarrier selection</th>
+  </tr>
+  <tr>
+    <td><b>CSI feature</b></td>
+    <td>Phase difference</td>
+    <td>Amplitude</td>
+    <td>Phase</td>
+    <td>Amplitude</td>
+    <td>Amplitude</td>
+  </tr>
+  <tr>
+    <td><b>Denoising method</b></td>
+    <td colspan="4">Fast/Slow wavelet transform</td>
+    <td>Band-pass Filter</td>
+  </tr>
+  <tr>
+    <td><b>Accuracy</b></td>
+    <td><b>92.17%</b></td>
+    <td>86.25%</td>
+    <td>79.49%</td>
+    <td>71.9%</td>
+    <td>83.95%</td>
+  </tr>
+</table>
+
+**The accuracy of heart rate estimation**
+<table style="text-align:center">
+  <tr>
+    <th>CSI</th>
+    <th colspan="2">Amplitude</th>
+    <th colspan="2">Phase difference</th>
+    <th>Average</th>
+  </tr>
+  <tr>
+    <td><b>Subcarrier selection method</b></td>
+    <td>SNR</td>
+    <td>SSNR</td>
+    <td>SNR</td>
+    <td>SSNR</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><b>Average value</b></td>
+    <td>84.28%</td>
+    <td>84.01%</td>
+    <td>82.02%</td>
+    <td>85.19%</td>
+    <td>83.875%</td>
+  </tr>
+  <tr>
+    <td><b>Maximun SNR value</b></td>
+    <td>85.80%</td>
+    <td>82.71%</td>
+    <td>84.65%</td>
+    <td>85.26%</td>
+    <td>84.605%</td>
+  </tr>
+   <tr>
+    <td><b>Average</b></td>
+    <td colspan="2">84.2%</td>
+    <td colspan="2">84.28%</td>
+    <td></td>
+  </tr>
+</table>
+
+
+
+
+
+
 
 
 
@@ -93,3 +186,6 @@ It is obvious that, the correlation of multi-person scenarios is always lower th
 [^3]:H.Wang et al., "Human respiration detection with commodity wifi devices: do user location and body orientation matter?," presented at the Proceedings of the 2016 ACM International Joint Conference on Pervasive and Ubiquitous Computing, Heidelberg, Germany, 2016.
 [^4]:X. Wang et al., "Placement Matters: Understanding the Effects of Device Placement for WiFi Sensing," vol. 6, no. 1 Proc. ACM Interact. Mob. Wearable Ubiquitous Technol., p. Article 32, 2022.
 [^5]:X. Wang, C. Yang, and S. J. A. T. o. C. f. H. Mao, "On CSI-based vital sign monitoring using commodity WiFi," vol. 1, no. 3, pp. 1-27, 2020
+[^6]:Y. Gu, X. Zhang, Z. Liu, and F. Ren, WiFi-Based Real-Time Breathing and Heart Rate Monitoring during Sleep. 2019, pp. 1-6.
+[^7]:S. Lee, Y. Park, Y. Suh, and S. Jeon, "Design and implementation of monitoring system for breathing and heart rate pattern using WiFi signals," in 2018 15th IEEE Annual Consumer Communications & Networking Conference (CCNC), 2018, pp. 1-7.
+[^8]:N. Bao et al., "The Intelligent Monitoring for the Elderly Based on WiFi Signals," Cham, 2018, pp. 883-892: Springer International Publishing.
