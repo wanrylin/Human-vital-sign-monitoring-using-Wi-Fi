@@ -1,6 +1,6 @@
 # Human vital sign monitoring using Wi-Fi 2021
 Part of work in this project has been published: https://ieeexplore.ieee.org/abstract/document/9790274 <br>
-My Final Year Project (FYP) cooperated with @github/LINDYZHOU homepage:https://github.com/LINDYZHOU.  
+My Final Year Project (FYP) is done with the cooperation of Lindy Zhou homepage:https://github.com/LINDYZHOU.  
 Our superviser is Prof.Cuo Yongxin homepage:https://www.ece.nus.edu.sg/stfpage/eleguoyx/.
 
 ## Introduction
@@ -40,8 +40,27 @@ As the figure shows, the 122th subcarrier is most sensitive in the first few sec
 According to paper[^2], in one Fresnel zone model, if there is one subcarrier is affected by respiration, there must be other affected subcarriers. Meanwhile, both breathing and heartbeat is most obvious on the chest. So according to Fresnel Zone Model, the subcarriers selected for breathing estimation and heartrate estimation should be the same.[^3] Due to the movement of breathing is much fiercer than heartbeat, the subcarrier selection is focus on breathing.
 
 #### SNR based subcarrier selection
-SNR is widely utilized in communication signal analysis. It is adapted to applied into human vital sign by us. The adapted SNR is able to qualify the sensing ability of subcarrier in a limited frequency range. It can be represented as below:
-$$ SNR_{m,i} = \frac{P_{i,max}}{P_n} = \frac{S_{i,max}}{\frac{1}{t}\cdot\sum_{f_2}^{m=f_1}S_{i,m} $$
+SNR is widely utilized in communication signal analysis. It is adapted to applied into human vital sign by us. The adapted SNR is able to qualify the sensing ability of subcarrier in a limited frequency range. It can be represented as below:<br>
+<img src="https://github.com/wanrylin/Human-vital-sign-monitoring-using-Wi-Fi/blob/main/figures/fomula1.png" alt="fomula 1" width="400"><br>
+where the frequency range is from $`f_1`$ to $f_2$. $P_{i,max}$ is the power of maximum frequency component, and $P_n$ is the power of noise. In the experiment, $P_n$ can be calculated as the average power. For human vital sign monitoring, like respiration, the frequency range can be set from 0Hz to 0.6Hz.
+After pre-processing and removing the DC component, the signals are transformed into the frequency domain. Then the SNR of every subcarrier is calculated. The threshold of SNR is 10dB. If there is any SNR of one subcarrier higher than the threshold, this subcarrier is selected.To reduce the interference, the minimum of the subcarriers selected is set to 3. If there is less than 3 subcarriers selected, with the threshold, the threshold will be declined by 5% and redo the selection.
+
+#### SSNR based subcarrier selection
+The CSI can be represented as a linear superposition of all the paths including the dynamic path $H_d\left(f,t\right)\$ static path $H_s\left(f,t\right)\$ and noise $H_n\left(f,t\right)$:<br>
+$$H\left(f,t\right)= H_d\left(f,t\right)+ H_s\left(f,t\right)+ H_n\left(f,t\right) $$
+Different from communication, in Wi-Fi sensing, only the dynamic signals reflected from the target contain the sensing information. Static signals such as the LOS signal and reflections from walls do not contain target information and therefore can not contribute to sensing. Therefore, it is not appropriate to use the SNR designed for communication to characterize the sensing capability. What is interesting is that in Wi-Fi sensing, in addition to thermal noise which influences the extraction of the dynamic signal for sensing, the static signal also has a negative effect on sensing. SSNR (sensing-signal-to-noise-ratio) is proposed to quantify the sensing capability. It is utilized to detect the boundary of the sensing in research[^4]. I introduce this concept into subcarrier analysis. SSNR can be represented as below:<br>
+$$SSNR=\frac{P_d}{P_i}=\frac{{|H_d\left(f,t\right)|}^2}{{|g\left(H_s\left(f,t\right)\right)+H_n\left(f,t\right)+H_i\left(f,t\right)|}^2} $$
+where $P_d$ is the power of the dynamic signal reflected from target, and $P_i$ contains the thermal noise ${H_n\left(f,t\right)}^2$, the effect of other dynamic subjects, i.e., interferers $(H_i\left(f,t\right))$, and also interference $(g\left(H_s\left(f,t\right)\right))\$ induced by the static signal $(H_s\left(f,t\right))$. In the experiment, the static signal power can be calculated as the average CSI amplitude(phase). The maximum value of the difference between the CSI amplitude(phase) and the averaged amplitude(phase) indicates the dynamic power. The interference power is calculated as the difference before and after hampel filtering the CSI amplitude(phase).<br>
+<img src="https://github.com/wanrylin/Human-vital-sign-monitoring-using-Wi-Fi/blob/main/figures/SSNR.png" alt="SSNR subcarrier selection" width="600"><br>
+Form the figure, it is obvious that the SSNR of every subcarrier is differs a lot. Therefore, it is important to select the subcarriers with maximum SSNR. In SSNR-based subcarrier selection, the 10 subcarriers with the biggest SSNR are selected and sent to the next process.
+
+
+
+
+
+
+
+
 
 
 
@@ -50,3 +69,4 @@ $$ SNR_{m,i} = \frac{P_{i,max}}{P_n} = \frac{S_{i,max}}{\frac{1}{t}\cdot\sum_{f_
 [^1]:Z. Jiang, T. H. Luan, X. Ren, D. Lv, H. Hao, J. Wang, K. Zhao, W. Xi, Y. Xu, and R. Li, “Eliminating the Barriers: Demystifying Wi-Fi Baseband Design and Introducing the PicoScenes Wi-Fi Sensing Platform,” IEEE Internet of Things Journal, pp. 1-1, 2021.
 [^2]:X. Wang et al., "Placement Matters: Understanding the Effects of Device Placement for WiFi Sensing," vol. 6, no. 1 Proc. ACM Interact. Mob. Wearable Ubiquitous Technol., p. Article 32, 2022.
 [^3]:H.Wang et al., "Human respiration detection with commodity wifi devices: do user location and body orientation matter?," presented at the Proceedings of the 2016 ACM International Joint Conference on Pervasive and Ubiquitous Computing, Heidelberg, Germany, 2016.
+[^4]:X. Wang et al., "Placement Matters: Understanding the Effects of Device Placement for WiFi Sensing," vol. 6, no. 1 Proc. ACM Interact. Mob. Wearable Ubiquitous Technol., p. Article 32, 2022.
