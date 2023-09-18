@@ -54,6 +54,28 @@ where $P_d$ is the power of the dynamic signal reflected from target, and $P_i$ 
 <img src="https://github.com/wanrylin/Human-vital-sign-monitoring-using-Wi-Fi/blob/main/figures/SSNR.png" alt="SSNR subcarrier selection" width="600"><br>
 Form the figure, it is obvious that the SSNR of every subcarrier is differs a lot. Therefore, it is important to select the subcarriers with maximum SSNR. In SSNR-based subcarrier selection, the 10 subcarriers with the biggest SSNR are selected and sent to the next process.
 
+### Multi-person detection
+According to the research[^5], there is 2 features of CSI phase data.<br>
+(1) The CSI phase consists of static component and dynamic component.<br>
+(2) The dynamic component is periodic with the dynamic source in the scenario.<br>
+From (1) and (2), if there is only one dynamic source in the scenario, the CSI phase of subcarrier can be represented as:<br>
+For the nth subcarrier: 
+$${H\left(f,t\right)}_n= {H_d\left(f,t\right)}_n+{H_s\left(f,t\right)}_n+{H_n\left(f,t\right)}_n
+                                                    = {kH_d\left(f,t\right)}_1+b{H_s\left(f,t\right)}_1+ {H_n\left(f,t\right)}_1$$
+Then when utilizing SSNR calculates the sensing ability of the subcarriers, a number of subcarriers with the highest SSNR in a frame can be selected. After SSNR subcarrier selection, we can consider that ${|H}_d\left(f,t\right)\left|\gg{|H}_n\left(f,t\right)\right|$. If so, the upper formula can be represented as:
+$${H\left(f,t\right)}_n={kH_d\left(f,t\right)}_1+b{H_s\left(f,t\right)}_1+ {H_n\left(f,t\right)}_1
+                                          \approx k^\prime{H\left(f,t\right)}_1+c $$
+According to this formula, there is a linear dependence between the subcarriers, which means the correlation between subcarriers should be close to 1, when there is only one person under monitoring. On the contrast, if there is more than one person under monitoring, the linear dependence between subcarriers is dramatically weaken and the correlation should be much smaller than the single-person situation.<br>
+Applying SSNR subcarrier selection into the system, and find top 20 subcarriers with the highest SSNR under IEEE 802.11ax protocol. Calculate the correlation coefficient between subcarriers in time domain and obtain the average value of the correlation coefficient matrix. The result is shown here:<br>
+<img src="https://github.com/wanrylin/Human-vital-sign-monitoring-using-Wi-Fi/blob/main/figures/multiperson.png" alt="SSNR subcarrier selection" width="600"><br>
+It is obvious that, the correlation of multi-person scenarios is always lower than 0.9 and the correlation of single-person scenarios is always over 0.9. The result of experiment matches the theory successfully. The threshold is set as 0.9, to detect whether it is multi-person situation. In the system, if constant 2 frames are detected the correlation is over 0.9, the system will recognize current situation is multi-person. The overall accuracy is 96.9% derived from the experiment.
+
+
+
+
+
+
+
 
 
 
@@ -70,3 +92,4 @@ Form the figure, it is obvious that the SSNR of every subcarrier is differs a lo
 [^2]:X. Wang et al., "Placement Matters: Understanding the Effects of Device Placement for WiFi Sensing," vol. 6, no. 1 Proc. ACM Interact. Mob. Wearable Ubiquitous Technol., p. Article 32, 2022.
 [^3]:H.Wang et al., "Human respiration detection with commodity wifi devices: do user location and body orientation matter?," presented at the Proceedings of the 2016 ACM International Joint Conference on Pervasive and Ubiquitous Computing, Heidelberg, Germany, 2016.
 [^4]:X. Wang et al., "Placement Matters: Understanding the Effects of Device Placement for WiFi Sensing," vol. 6, no. 1 Proc. ACM Interact. Mob. Wearable Ubiquitous Technol., p. Article 32, 2022.
+[^5]:X. Wang, C. Yang, and S. J. A. T. o. C. f. H. Mao, "On CSI-based vital sign monitoring using commodity WiFi," vol. 1, no. 3, pp. 1-27, 2020
