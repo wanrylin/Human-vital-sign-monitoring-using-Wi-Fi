@@ -3,6 +3,27 @@ Part of work in this project has been published: https://ieeexplore.ieee.org/abs
 My Final Year Project (FYP) is done with the cooperation of Lindy Zhou homepage:https://github.com/LINDYZHOU.  
 Our superviser is Prof.Cuo Yongxin homepage:https://www.ece.nus.edu.sg/stfpage/eleguoyx/.
 
+- [Human vital sign monitoring using Wi-Fi 2021](#human-vital-sign-monitoring-using-wi-fi-2021)
+  * [Introduction](#introduction)
+  * [Main contribution](#main-contribution)
+  * [Conditions and assumption](#conditions-and-assumption)
+  * [Overview of the system](#overview-of-the-system)
+  * [System Design](#system-design)
+    + [1 CSI capturing](#1-csi-capturing)
+    + [2 Subcarrier selection](#2-subcarrier-selection)
+      - [SNR based subcarrier selection](#snr-based-subcarrier-selection)
+      - [SSNR based subcarrier selection](#ssnr-based-subcarrier-selection)
+    + [Multi-person detection](#multi-person-detection)
+    + [Wavelet transform](#wavelet-transform)
+  * [Result and conclusion](#result-and-conclusion)
+    + [Evaluation metric](#evaluation-metric)
+    + [Result](#result)
+    + [Conclusion](#conclusion)
+  * [Reference](#reference)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+
 ## Introduction
 Due to the aging tendency and COVID-19 all over the world, the demand of non-contact vital sign monitoring is becoming more and more important. Compared to radar or high-quality camera, Wi-Fi devices are off-the-shelf, universal and low-cost. Therefore, great contribution has been made by the researchers all over the world on vital sign monitoring using Wi-Fi recently.<br>
 This project proposes a new system based on Wi-Fi CSI data. In the contrast to the pervious study, I introduce the latest IEEE 802.11ac/ax protocols into the system instead of IEEE 802.11n protocol as the sensing tool. Meanwhile, I extract both CSI amplitude and phase data as the input of the system from the network card. To reach better performance, I design two new subcarrier selection methods, SNR subcarrier selection and SSNR subcarrier selection. Furthermore, a new multi-person detection method is proposed via SSNR, which detection accuracy can be over 96%. The overall accuracy for breathing rate estimation is over 92% and for heart rate estimation is over 84%.
