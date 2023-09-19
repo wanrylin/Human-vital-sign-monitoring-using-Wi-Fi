@@ -13,8 +13,8 @@ Our superviser is Prof.Cuo Yongxin homepage:https://www.ece.nus.edu.sg/stfpage/e
     + [2 Subcarrier selection](#2-subcarrier-selection)
       - [SNR based subcarrier selection](#snr-based-subcarrier-selection)
       - [SSNR based subcarrier selection](#ssnr-based-subcarrier-selection)
-    + [Multi-person detection](#multi-person-detection)
-    + [Wavelet transform](#wavelet-transform)
+    + [3 Multi-person detection](#multi-person-detection)
+    + [4 Wavelet transform](#wavelet-transform)
   * [Result and conclusion](#result-and-conclusion)
     + [Evaluation metric](#evaluation-metric)
     + [Result](#result)
@@ -73,7 +73,7 @@ where $P_d$ is the power of the dynamic signal reflected from target, and $P_i$ 
 <img src="https://github.com/wanrylin/Human-vital-sign-monitoring-using-Wi-Fi/blob/main/figures/SSNR.png" alt="SSNR subcarrier selection" width="600"><br>
 Form the figure, it is obvious that the SSNR of every subcarrier is differs a lot. Therefore, it is important to select the subcarriers with maximum SSNR. In SSNR-based subcarrier selection, the 10 subcarriers with the biggest SSNR are selected and sent to the next process.
 
-### Multi-person detection
+### 3 Multi-person detection
 According to the research[^5], there is 2 features of CSI phase data.<br>
 (1) The CSI phase consists of static component and dynamic component.<br>
 (2) The dynamic component is periodic with the dynamic source in the scenario.<br>
@@ -89,7 +89,7 @@ Applying SSNR subcarrier selection into the system, and find top 20 subcarriers 
 <img src="https://github.com/wanrylin/Human-vital-sign-monitoring-using-Wi-Fi/blob/main/figures/multiperson.png" alt="SSNR subcarrier selection" width="600"><br>
 It is obvious that, the correlation of multi-person scenarios is always lower than 0.9 and the correlation of single-person scenarios is always over 0.9. The result of experiment matches the theory successfully. The threshold is set as 0.9, to detect whether it is multi-person situation. In the system, if constant 2 frames are detected the correlation is over 0.9, the system will recognize current situation is multi-person. The overall accuracy is 96.9% derived from the experiment.
 
-### Wavelet transform
+### 4 Wavelet transform
 Different from FFT and short-time Fourier transform (STFT), Wavelet Transform can achieve a time-frequency representation of data, which provides not only the optimal resolution both in the time and frequency domains but also a multiscale analysis of the data. With Wavelet Transform, the phase difference data after subcarrier selection can be decomposed into an approximation coefficient vector with a low-pass filter and a detail coefficient vector with a high-pass filter. In fact, the approximation coefficient vector represents the basic shape of the input signal with large-scale characteristics, whereas the detail coefficient vector describes the high-frequency noises and the detailed information with small-scale characteristics. 
 
 In my system, Wavelet Transform is utilized to remove high-frequency noises from the collected CSI data. Moreover, the approximation coefficient $\alpha^L$  is used to detect the breathing rate and the sum of detail coefficients $\beta^{L-1}+\ \beta^L$ is used to detect the heart rate and the L is set to 4. For the original signal, I first execute the DWT-based decomposition recursively for four levels with the Daubechies (db) wavelet filter. After downsampling, the sampling rate becomes 20 Hz. Then the sampling rate is halved after every step of Wavelet Transform decomposition, and the detail coefficient $\beta^1$ and the approximation coefficient $\alpha^1$ have a frequency ranging from 10 to 5 Hz and 0 to 5 Hz, respectively.  
