@@ -80,12 +80,12 @@ If $𝑓_1$ is higher than 0.3 Hz, it is called Fast Breath and only the 5th det
 For heartbeat rate estimation, The sum of detail coefficients $\beta^3+\ \beta^4$ covers frequencies from 0.625 to 2.5 Hz, which is used to reconstruct the heart signal.
 
 ## Result and conclusion
-#### Evaluation metric
+### Evaluation metric
 The ground truths of vital signs are monitored by a breath belt and 2 oximeters. Denote the estimated value of breathing or heart rate as $f_e$, the ground truth as $f_g$. The estimation accuracy $A_e$ is denoted as the equation:
 $$A_e = \left(1 - \frac{|f_e - f_g|}{f_g}\right) \times 100 \\% $$
 The performance of the system is evaluated by the estimation accuracy.
 
-#### Result
+### Result
 This project has applied different CSI data features while extracting the respiratory signal. The performance of breathing rate estimation under IEEE 802.11ac/ax  is evaluated. The overall accuracy is shown in the table, and all the accuracy is calculated based on the dataset from our experiment.<br>
 **The accuracy of breathing rate estimation[^6][^7][^8]**
 <table style="text-align:center">
@@ -158,6 +158,8 @@ This project has applied different CSI data features while extracting the respir
   </tr>
 </table>
 
+### Conclusion
+The highest accuracy for breath rate estimation is achieved while utilizing the phase difference of CSI. The SNR-based subcarrier method has a better performance than the largest variance method, and Fast/Slow Breath Wavelet Transform is better than band-pass filter method from the reference. The performance of the heart rate estimation is very closed no matter what input is and what subcarrier selection method is utilized. This is contradictory to the principle. Therefore, I assume that the performance of ‘db4’ Wavelet Transform is not satisfied enough that prevent the accuracy rising. The proposed multi-person detection method which firstly utilized SSNR as a measurement achieves over 96% accuracy.
 
 
 
