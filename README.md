@@ -21,8 +21,6 @@ Our superviser is Prof.Cuo Yongxin homepage:https://www.ece.nus.edu.sg/stfpage/e
     + [Conclusion](#conclusion)
   * [Reference](#reference)
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 
 ## Introduction
 Due to the aging tendency and COVID-19 all over the world, the demand of non-contact vital sign monitoring is becoming more and more important. Compared to radar or high-quality camera, Wi-Fi devices are off-the-shelf, universal and low-cost. Therefore, great contribution has been made by the researchers all over the world on vital sign monitoring using Wi-Fi recently.<br>
